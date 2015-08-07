@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-""" Drawing box-art, text-ui layouts. 
+# -*- coding: utf-8 -*-
+""" Drawing box-art, text-ui layouts.
 
 author : Manish Parekh (t3hmun at gmail dot com)
 created: 06 August 2015
@@ -18,7 +19,7 @@ bml = '├'
 bmr = '┤'
 
 term_width, term_height = shutil.get_terminal_size()
-newline = '\n'
+nl = '\n'
 
 
 def top(width=term_width):
@@ -36,10 +37,22 @@ def middle(width=term_width):
     return bml + bh * (width - 2) + bmr
 
 
-def msg(message, width=term_width):
-    """ An independent box with a message. """
+def msg(message, width=term_width - 2, connect=None):
+    """ An box with a message.
+
+    connect: This refers to the postion of the box in relation to others.
+    May be set to 'top', 'bottom' or 'middle', default None.
+    """
     message = wrap(message, width)
-    box = top(width) + message + bottom(width)
+    if connect is None:
+        box = top(width) + nl + message + nl + bottom(width)
+    elif connect is "top":
+        box = top(width) + nl + message
+    elif connect is "bottom":
+        box = middle(width) + nl + message + nl + bottom(width)
+    elif connect is "middle":
+        box = middle(width) + nl + message
+
     return box
 
 
@@ -83,4 +96,4 @@ def wrap(text, width=term_width, left=bv, right=bv, gapchars=[' ', '-']):
         line = text[start:position]
         line = left + line.ljust(line_len) + right
         lines.append(line)
-    return ''.join(lines)
+    return '\n'.join(lines)
