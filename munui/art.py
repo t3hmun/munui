@@ -1,4 +1,11 @@
-""" Drawing box-art, text-gui layouts. """
+#!/usr/bin/env python3
+""" Drawing box-art, text-ui layouts. 
+
+author : Manish Parekh (t3hmun at gmail dot com)
+created: 06 August 2015
+license: GPL3 (http://www.gnu.org/licenses/gpl-3.0.en.html)
+"""
+
 import shutil
 
 btl = '┌'
