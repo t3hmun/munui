@@ -19,25 +19,26 @@ bml = '├'
 bmr = '┤'
 
 term_width, term_height = shutil.get_terminal_size()
+default_width = term_width - 2
 nl = '\n'
 
 
-def top(width=term_width):
+def top(width=default_width):
     """ The top box-art line. """
     return btl + bh * (width - 2) + btr
 
 
-def bottom(width=term_width):
+def bottom(width=default_width):
     """ The bottom box-art line. """
     return bbl + bh * (width - 2) + bbr
 
 
-def middle(width=term_width):
+def middle(width=default_width):
     """ The middle box-art line. """
     return bml + bh * (width - 2) + bmr
 
 
-def msg(message, width=term_width - 2, connect=None):
+def msg(message, width=default_width, connect=None):
     """ An box with a message.
 
     connect: This refers to the postion of the box in relation to others.
@@ -56,13 +57,28 @@ def msg(message, width=term_width - 2, connect=None):
     return box
 
 
-def wrap(text, width=term_width, left=bv, right=bv, gapchars=[' ', '-']):
+def numlist(list, width=default_width, truncate=None, connect=None):
+    """ A numbered list. No title or message. """
+    numspace = 4
+    i = 0
+    entries = []
+    for item in list:
+        i += 1
+        if truncate is not None:
+            item = item[0:truncate - numspace]
+        withnum = (str(i) + ".").rjust(numspace) + item
+        entries.append(withnum)
+    text = '\n'.join(entries)
+    return msg(text, width, connect=connect)
+
+
+def wrap(text, width=default_width, left=bv, right=bv, gapchars=[' ', '-']):
     """ Wrap text between left and right within width. """
     total_len = len(text)
     line_len = width - len(left) - len(right)
     # If everything fits on a single line.
-    if(total_len < line_len):
-        return left + text.ljust(line_len) + right
+    # if(total_len < line_len):
+    #    return left + text.ljust(line_len) + right
     lines = []
     position = 0
     start = 0
@@ -82,10 +98,17 @@ def wrap(text, width=term_width, left=bv, right=bv, gapchars=[' ', '-']):
             line = left + line.ljust(line_len) + right
             lines.append(line)
             # Continue after the newline (newlines are added via the list).
-            position = newlinePos + 1
+            position = start + newlinePos + 1
             continue
 
-        # Search for possible gap to insert newline.
+        # This triggers on the final line, after all of the newlines.
+        if position is total_len:
+            line = text[start:position]
+            line = left + line.ljust(line_len) + right
+            lines.append(line)
+            break
+
+        # Search backward for possible gap to insert newline.
         while text[position - 1] not in gapchars:
             position -= 1
             # No break point find so force a break at the max len line.
