@@ -38,6 +38,11 @@ def middle(width=default_width):
     return bml + bh * (width - 2) + bmr
 
 
+def prompt(width=default_width):
+    """ The middle box-art line. """
+    return bml + bh * (width - 2) + bbr
+
+
 def msg(message, width=default_width, connect=None):
     """ An box with a message.
 
@@ -74,20 +79,19 @@ def numlist(list, width=default_width, truncate=None, connect=None):
 
 def wrap(text, width=default_width, left=bv, right=bv, gapchars=[' ', '-']):
     """ Wrap text between left and right within width. """
-    total_len = len(text)
+    text_len = len(text)
     line_len = width - len(left) - len(right)
-    # If everything fits on a single line.
-    # if(total_len < line_len):
-    #    return left + text.ljust(line_len) + right
     lines = []
     position = 0
     start = 0
-    while position < total_len:
+    while position < text_len:
+        # Move positions forward
         start = position
         position += line_len
-        if position > total_len:
-            position = total_len
+        if position > text_len:
+            position = text_len
         furthest_position = position
+
         # A slice that is smaller or equal to the max line len.
         slice = text[start:position]
         # Search for existing newline, use it if it exists.
@@ -102,7 +106,7 @@ def wrap(text, width=default_width, left=bv, right=bv, gapchars=[' ', '-']):
             continue
 
         # This triggers on the final line, after all of the newlines.
-        if position is total_len:
+        if position is text_len:
             line = text[start:position]
             line = left + line.ljust(line_len) + right
             lines.append(line)
