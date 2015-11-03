@@ -9,6 +9,7 @@ license: GPL3 (http://www.gnu.org/licenses/gpl-3.0.en.html)
 
 import shutil
 
+# Standard boxart characters, available in most code pages.
 btl = '┌'
 bh = '─'
 btr = '┐'
@@ -39,15 +40,17 @@ def middle(width=default_width):
 
 
 def prompt(width=default_width):
-    """ The middle box-art line. """
+    """ Bottom box-art line with a connector on the bottom left. """
     return bml + bh * (width - 2) + bbr
 
 
 def msg(message, width=default_width, connect=None):
     """ An box with a message.
 
-    connect: This refers to the postion of the box in relation to others.
-    May be set to 'top', 'bottom' or 'middle', default None.
+    connect:
+    This refers to the postion of the box in relation to others.
+    May be set to 'top', 'bottom', 'middle' or 'prompt' default None.
+    Sets appropriate box art connecting to other parts.
     """
     message = wrap(message, width)
     if connect is None:
