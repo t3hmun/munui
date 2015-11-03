@@ -79,7 +79,8 @@ def list_select(
     lines = []
     if title:
         lines.append(art.msg(title, width, "top"))
-        lines.append(art.numlist(items, width, truncate, "middle", start=start))
+        lines.append(art.numlist(items, width, truncate, "middle",
+                                 start=start))
     else:
         lines.append(art.numlist(items, width, truncate, "top", start=start))
 
