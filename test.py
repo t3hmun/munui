@@ -28,9 +28,9 @@ print(msg("middle", connect="middle"))
 print(msg("bottom", connect="bottom"))
 
 
-testlist = ['First option', 'Second Option', \
-"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", \
-'The third option was a testing thing-a-me-bobbin, and so is this.']
+testlist = ['First option', 'Second Option',
+            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
+            'The third option was a testing thing-a-me-doo, and so is this.']
 
 # This is just a numbered list.
 print(numlist(testlist))
@@ -43,6 +43,6 @@ print(numlist(testlist, truncate='oneline', start=10))
 # The index(es) of the selected items is returned.
 sel = list_select_confirm(
     ['one', 'two', 'three', 'four'], title="A lovely selection", abort='a',
-    multi_select=True, start = 3)
+    multi_select=True, start=3)
 
 print("Index(es) " + str(sel) + " was selected")

@@ -104,7 +104,7 @@ def wrap(text, width=default_width, left=bv, right=bv, gapchars=[' ', '-']):
     position = 0
     start = 0
     # Don't use a linebreak int he first half of the line to avoid splitting.
-    min_line_len = line_len / 2;
+    min_line_len = line_len / 2
     while position < text_len:
         # Move positions forward
         start = position
