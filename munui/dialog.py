@@ -4,20 +4,23 @@
 
 author : Manish Parekh (t3hmun at gmail dot com)
 created: 07 August 2015
-license: GPL3 (http://www.gnu.org/licenses/gpl-3.0.en.html)
+license: GPL3 (http://www.gnu.org/licenses/gpl-3.0.en.
+html)
 """
 from munui import *
 
 
 def list_select_confirm(items, full_text=True, title=None, multi_select=False,
-                        truncate=None, width=art.default_width, abort=None):
+                        truncate=None, width=art.default_width, abort=None,
+                        start=1):
     """ Prompt user to make selection and then ask for confirmation.
 
     Does not ask for confirmation on abort.
     """
     confirmed = False
     while not confirmed:
-        res = list_select(items, title, multi_select, truncate, width, abort)
+        res = list_select(items, title, multi_select,
+                          truncate, width, abort, start)
 
         # Deal with abort response without confirming.
         if res is None:
@@ -51,7 +54,7 @@ def list_select_confirm(items, full_text=True, title=None, multi_select=False,
             elif response is 'r':
                 return list_select_confirm(
                     items, full_text, title, multi_select, truncate, width,
-                    abort)
+                    abort, start)
             elif response is abort:
                 return None
             else:
@@ -66,18 +69,19 @@ def prompt(width):
 
 def list_select(
         items, title=None, multi_select=False, truncate=None,
-        width=art.default_width, abort=None):
+        width=art.default_width, abort=None, start=1):
     """ Prompt the user to make a selection from a numbered list of items.
 
     If abort is enabled then None is returned on abort.
     If multiselect is enabled an array of indexes is returned.
     """
+
     lines = []
     if title:
         lines.append(art.msg(title, width, "top"))
-        lines.append(art.numlist(items, width, truncate, "middle"))
+        lines.append(art.numlist(items, width, truncate, "middle", start))
     else:
-        lines.append(art.numlist(items, width, truncate, "top"))
+        lines.append(art.numlist(items, width, truncate, "top", start))
 
     if multi_select:
         instructions = "Select one or more items by typing the numbers" \

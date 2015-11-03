@@ -28,7 +28,10 @@ print(msg("middle", connect="middle"))
 print(msg("bottom", connect="bottom"))
 
 # This is just a numbered list.
-print(numlist(["This choice.", "That choice.", "Yet another choice."]))
+print(numlist(["This choice.", "That a very very long choice that need wrapping\
+ choice.", "x:DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", "Yet another choice."]))
+
+print(numlist(["This choice.", "x:DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", "Yet another choice."], truncate='oneline', start=10))
 
 
 # This is the first real feature demo.
@@ -36,6 +39,6 @@ print(numlist(["This choice.", "That choice.", "Yet another choice."]))
 # The index(es) of the selected items is returned.
 sel = list_select_confirm(
     ['one', 'two', 'three', 'four'], title="A lovely selection", abort='a',
-    multi_select=True)
+    multi_select=True, start = 3)
 
 print("Index(es) " + str(sel) + " was selected")

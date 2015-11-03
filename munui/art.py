@@ -65,17 +65,33 @@ def msg(message, width=default_width, connect=None):
     return box
 
 
-def numlist(list, width=default_width, truncate=None, connect=None):
+def numlist(itemlist, width=default_width, truncate=None, connect=None,
+            numspace='auto', start=1):
     """ A numbered list. No title or message. """
-    numspace = 4
-    i = 0
+
+    if numspace is 'auto':
+        # Calculate the space required for numbers.
+        # Count the text len of the smallest and largest number.
+        # Smallest may have negative sign therefore longer.
+        longestNum = max(len(str(start)), len(str(start + len(itemlist))))
+        numspace = longestNum + 2  # Add spaces for gutter and divider.
+
+    if truncate is 'oneline':
+        truncate = default_width
+
+    i = start - 1
     entries = []
-    for item in list:
+    for item in itemlist:
         i += 1
         if truncate is not None:
-            item = item[0:truncate - numspace]
-        withnum = (str(i) + ".").rjust(numspace) + item
-        entries.append(withnum)
+            # Left border + right border a space = 3, space needed to avoid
+            #  triggering the wrapping algorithm.
+            item = item[0:truncate - numspace - 3]
+        numstr = (str(i) + ".").rjust(numspace)
+        if len(numstr) > numspace:
+            num = num[0:-numspace]  # Front tuncating.
+        entries.append(numstr + item)
+
     text = '\n'.join(entries)
     return msg(text, width, connect=connect)
 
