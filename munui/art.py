@@ -103,6 +103,8 @@ def wrap(text, width=default_width, left=bv, right=bv, gapchars=[' ', '-']):
     lines = []
     position = 0
     start = 0
+    # Don't use a linebreak int he first half of the line to avoid splitting.
+    min_line_len = line_len / 2;
     while position < text_len:
         # Move positions forward
         start = position
@@ -134,12 +136,13 @@ def wrap(text, width=default_width, left=bv, right=bv, gapchars=[' ', '-']):
         # Search backward for possible gap to insert newline.
         while text[position - 1] not in gapchars:
             position -= 1
-            # No break point find so force a break at the max len line.
-            if position == start:
+            # No break point found so force a break at the max len line.
+            if position <= start + min_line_len:
                 position = furthest_position
                 break
 
         line = text[start:position]
         line = left + line.ljust(line_len) + right
         lines.append(line)
+
     return '\n'.join(lines)
