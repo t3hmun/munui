@@ -27,11 +27,15 @@ print(msg("top", connect="top"))
 print(msg("middle", connect="middle"))
 print(msg("bottom", connect="bottom"))
 
-# This is just a numbered list.
-print(numlist(["This choice.", "That a very very long choice that need wrapping\
- choice.", "x:DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", "Yet another choice."]))
 
-print(numlist(["This choice.", "x:DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", "Yet another choice."], truncate='oneline', start=10))
+testlist = ['First option', 'Second Option', \
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", \
+'The third option was a testing thing-a-me-bobbin, and so is this.']
+
+# This is just a numbered list.
+print(numlist(testlist))
+
+print(numlist(testlist, truncate='oneline', start=10))
 
 
 # This is the first real feature demo.

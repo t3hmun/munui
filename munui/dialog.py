@@ -19,8 +19,8 @@ def list_select_confirm(items, full_text=True, title=None, multi_select=False,
     """
     confirmed = False
     while not confirmed:
-        res = list_select(items, title, multi_select,
-                          truncate, width, abort, start)
+        res = list_select(items, title, multi_select, truncate, width, abort,
+                          start)
 
         # Deal with abort response without confirming.
         if res is None:
@@ -52,9 +52,9 @@ def list_select_confirm(items, full_text=True, title=None, multi_select=False,
             if response is 'c':
                 return res
             elif response is 'r':
-                return list_select_confirm(
-                    items, full_text, title, multi_select, truncate, width,
-                    abort, start)
+                return list_select_confirm(items, full_text, title,
+                                           multi_select, truncate, width,
+                                           abort, start)
             elif response is abort:
                 return None
             else:
@@ -79,9 +79,9 @@ def list_select(
     lines = []
     if title:
         lines.append(art.msg(title, width, "top"))
-        lines.append(art.numlist(items, width, truncate, "middle", start))
+        lines.append(art.numlist(items, width, truncate, "middle", start=start))
     else:
-        lines.append(art.numlist(items, width, truncate, "top", start))
+        lines.append(art.numlist(items, width, truncate, "top", start=start))
 
     if multi_select:
         instructions = "Select one or more items by typing the numbers" \
@@ -95,7 +95,9 @@ def list_select(
 
     lines.append(art.msg(instructions, width, "middle"))
     dialog = '\n'.join(lines)
-    max_value = len(items)
+
+    # These are the numbers seen by the user, not indexes.
+    valid = lambda x: x >= start and x < start + len(items)
 
     valid_response = False
     while not valid_response:
@@ -108,19 +110,21 @@ def list_select(
             result = []
             try:
                 for item in response.split():
-                    i = int(item) - 1
-                    if i < 0 or i >= max_value:
+                    num = int(item)  # This is potential ValueError
+                    if not valid(num):
                         raise ValueError()
-                    result.append(i)
+                    # Remove start to convert to index.
+                    result.append(num - start)
                     valid_response = True
             except ValueError:
                 error = "Invalid entry '" + item + "'. Try again."
                 valid_response = False
         else:
             try:
-                result = int(response) - 1
-                if result < 0 or result >= max_value:
+                num = int(response)
+                if not valid(num):
                     raise ValueError()
+                result = num - 1  # Convert to index.
                 valid_response = True
             except ValueError:
                 error = "Invalid response '" + response + "'. Try again."
